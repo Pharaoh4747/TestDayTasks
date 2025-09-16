@@ -2,22 +2,26 @@
 {
     public class Map
     {
-        public const ushort Width = 1000;
+        public readonly ushort Width;
 
-        public const ushort Height = 1000;
+        public readonly ushort Height;
 
-        public SurfaceTile[,] SurfaceLayer { get; set; } = new SurfaceTile[Width, Height];
+        private SurfaceTile[,] SurfaceLayer { get; set; }
 
-        public ObjectTile[,] ObjectsLayer { get; set; } = new ObjectTile[Width, Height];
-        
-        public Map() {
-            for (var x = 0; x < Map.Width; x++)
-                for (var y = 0; y < Map.Height; y++)
-                {
-                    SurfaceLayer[x, y] = new SurfaceTile();
-                    ObjectsLayer[x, y] = new ObjectTile();
-                }
-                    
+        private ObjectTile[,] ObjectsLayer { get; set; }
+                
+
+        public Map(ushort width, ushort height) {
+            Width = width;
+            Height = height;
+
+            SurfaceLayer = new SurfaceTile[Width, Height];
+            ObjectsLayer = new ObjectTile[Width, Height];
+        }
+
+        public ref SurfaceTile GetSurfaceTile(ushort x, ushort y)
+        {
+            return ref SurfaceLayer[x, y];
         }
     }
 }

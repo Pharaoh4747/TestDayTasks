@@ -2,7 +2,7 @@
 
 namespace TestDayTasksLibrary.Model
 {
-    public class SurfaceTile: Tile
+    public struct SurfaceTile
     {
         public SurfaceType SurfaceType { get; set; }
 

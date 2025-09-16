@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TestDayTasksLibrary.Model;
+﻿using TestDayTasksLibrary.Model;
 using TestDayTasksLibrary.Model.Enums;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TestDayTasksLibrary.Application
 {
@@ -20,13 +14,15 @@ namespace TestDayTasksLibrary.Application
         public SurfaceType GetSurfaceType(ushort x, ushort y)
         {
             ValidateCoordinates(x, y);
-            return Map.SurfaceLayer[x, y].SurfaceType;
+            var tile = Map.GetSurfaceTile(x, y);
+            return tile.SurfaceType;
         }
 
         public void SetSurfaceType(ushort x, ushort y, SurfaceType surfaceType)
         {
             ValidateCoordinates(x, y);
-            Map.SurfaceLayer[x, y].SurfaceType = surfaceType;
+            ref var tile = ref Map.GetSurfaceTile(x, y);
+            tile.SurfaceType = surfaceType;
         }
 
         public void LoadSurfaceFromArray(SurfaceType[,] array)
@@ -34,9 +30,13 @@ namespace TestDayTasksLibrary.Application
             if (array.GetLength(0) != Map.Width || array.GetLength(1) != Map.Height)
                 throw new ArgumentException("Array is not same size as map", nameof(array));
             
-            for (var x = 0; x<Map.Width; x++)
-                for (var y = 0; y < Map.Height; y++)
-                    Map.SurfaceLayer[x,y].SurfaceType = array[x,y];
+            for (ushort x = 0; x<Map.Width; x++)
+                for (ushort y = 0; y < Map.Height; y++)
+                {
+                    ref var tile = ref Map.GetSurfaceTile(x, y);
+                    tile.SurfaceType = array[x, y];
+                }
+                    
         }
 
         public void LoadSurfaceFromLists(IList<IList<SurfaceType>> lists)
@@ -48,9 +48,12 @@ namespace TestDayTasksLibrary.Application
                 if (list.Count != Map.Height)
                     throw new ArgumentException("Row count not equal map height", nameof(lists));
 
-            for (var x = 0; x < Map.Width; x++)
-                for (var y = 0; y < Map.Height; y++)
-                    Map.SurfaceLayer[x, y].SurfaceType = lists[x][y];
+            for (ushort x = 0; x < Map.Width; x++)
+                for (ushort y = 0; y < Map.Height; y++)
+                {
+                    ref var tile = ref Map.GetSurfaceTile(x, y);
+                    tile.SurfaceType = lists[x][y];
+                }
         }
 
         public void FillSurfaceType(ushort x, ushort y, ushort width, ushort height, SurfaceType surfaceType)
@@ -64,7 +67,10 @@ namespace TestDayTasksLibrary.Application
 
             for (var i = x; i < x + width; i++)
                 for (var j = y; j < y + height; j++)
-                    Map.SurfaceLayer[i, j].SurfaceType = surfaceType;
+                {
+                    ref var tile = ref Map.GetSurfaceTile(x, y);
+                    tile.SurfaceType = surfaceType;
+                }
         }
 
         private void ValidateCoordinates(ushort x, ushort y)

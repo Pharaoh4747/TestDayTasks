@@ -7,7 +7,7 @@ namespace Client
     {
         static void Main(string[] args)
         {
-            var map = new Map();
+            var map = new Map(1000, 1000);
             var game = new Game(map);
         }
     }
