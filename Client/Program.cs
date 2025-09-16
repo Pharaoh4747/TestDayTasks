@@ -8,7 +8,16 @@ namespace Client
         static void Main(string[] args)
         {
             var map = new Map(1000, 1000);
-            var game = new Game(map);
+            var objects = new GameObjectCollection(map);
+            var game = new Game(map, objects);
+
+            game.Objects.ObjectAdded += Objects_ObjectAdded1;
         }
+
+        private static void Objects_ObjectAdded1(object? sender, GameObject e)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

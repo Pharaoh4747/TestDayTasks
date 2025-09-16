@@ -7,8 +7,12 @@ namespace TestDayTasksLibrary.Application
     {
         private Map Map { get; set; } 
 
-        public Game(Map map) { 
+        public GameObjectCollection Objects { get; set; }
+
+
+        public Game(Map map, GameObjectCollection objects) { 
             Map = map;
+            Objects = objects;
         }
 
         public SurfaceType GetSurfaceType(ushort x, ushort y)
@@ -80,7 +84,6 @@ namespace TestDayTasksLibrary.Application
 
             if (y >= Map.Height)
                 throw new ArgumentException("Y is out of map boundaries", nameof(y));
-
         }
     }
 }

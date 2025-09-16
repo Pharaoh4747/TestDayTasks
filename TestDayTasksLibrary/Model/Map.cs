@@ -8,7 +8,7 @@
 
         private SurfaceTile[,] SurfaceLayer { get; set; }
 
-        private ObjectTile[,] ObjectsLayer { get; set; }
+        private ObjectTile[,] ObjectLayer { get; set; }
                 
 
         public Map(ushort width, ushort height) {
@@ -16,12 +16,17 @@
             Height = height;
 
             SurfaceLayer = new SurfaceTile[Width, Height];
-            ObjectsLayer = new ObjectTile[Width, Height];
+            ObjectLayer = new ObjectTile[Width, Height];
         }
 
         public ref SurfaceTile GetSurfaceTile(ushort x, ushort y)
         {
             return ref SurfaceLayer[x, y];
+        }
+
+        public ref ObjectTile GetObjectTile(ushort x, ushort y)
+        {
+            return ref ObjectLayer[x, y];
         }
     }
 }
