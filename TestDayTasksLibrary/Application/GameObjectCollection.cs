@@ -4,11 +4,13 @@ namespace TestDayTasksLibrary.Application
 {
     public class GameObjectCollection
     {
+        // Слабое место с точки зрения многопоточности и согласования, реализовать на ConcurentDictionary
         private Dictionary<ushort, GameObject> Objects { get; set; } 
             = new Dictionary<ushort, GameObject>();
 
         private Map Map { get; set; }
 
+        // Слабое место с точки зрения масштабируемости, продумать синхронизацию коллекций
         public event EventHandler<GameObject>? ObjectAdded;
 
         public event EventHandler<GameObject>? ObjectDeleted;
