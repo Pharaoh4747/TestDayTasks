@@ -9,10 +9,13 @@ namespace TestDayTasksLibrary.Application
 
         public GameObjectCollection Objects { get; set; }
 
+        public RegionCollection Regions { get; set; }
 
-        public Game(Map map, GameObjectCollection objects) { 
+
+        public Game(Map map, GameObjectCollection objects, RegionCollection regions) { 
             Map = map;
             Objects = objects;
+            Regions = regions;
         }
 
         public SurfaceType GetSurfaceType(ushort x, ushort y)

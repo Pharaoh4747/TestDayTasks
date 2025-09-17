@@ -1,6 +1,6 @@
 ﻿using TestDayTasksLibrary.Model.Enums;
 
-namespace TestDayTasksLibrary.Model
+namespace TestDayTasksLibrary.Model.Tiles
 {
     public struct ObjectTile
     {

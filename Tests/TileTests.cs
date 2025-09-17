@@ -1,6 +1,5 @@
-using TestDayTasksLibrary.Application;
-using TestDayTasksLibrary.Model;
 using TestDayTasksLibrary.Model.Enums;
+using TestDayTasksLibrary.Model.Tiles;
 
 namespace Tests
 {

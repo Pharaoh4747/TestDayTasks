@@ -9,15 +9,8 @@ namespace Client
         {
             var map = new Map(1000, 1000);
             var objects = new GameObjectCollection(map);
-            var game = new Game(map, objects);
-
-            game.Objects.ObjectAdded += Objects_ObjectAdded1;
+            var regions = new RegionCollection(map);
+            var game = new Game(map, objects, regions);
         }
-
-        private static void Objects_ObjectAdded1(object? sender, GameObject e)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

@@ -25,7 +25,7 @@ namespace TestDayTasksLibrary.Application
             if (obj.Width == 0 || obj.Height == 0)
                 throw new ArgumentException("Object with zero size can not be added");
 
-            if (obj.X + obj.Width >= Map.Width || obj.Y + obj.Height >= Map.Height)
+            if (obj.X + obj.Width > Map.Width || obj.Y + obj.Height > Map.Height)
                 throw new ArgumentException("Object out of map boundaries");
 
             for (ushort x = obj.X; x < obj.X + obj.Width; x++)
@@ -94,12 +94,12 @@ namespace TestDayTasksLibrary.Application
             return Objects[tile.ObjectId.Value];
         }
 
-        public IList<GameObject> GetObjectsByRegion(ushort x, ushort y, ushort width, ushort height)
+        public IList<GameObject> GetObjectsIn(ushort x, ushort y, ushort width, ushort height)
         {
             if (width == 0 || height == 0)
                 throw new ArgumentException("Region is zero size");
 
-            if (x + width >= Map.Width || y + height >= Map.Height)
+            if (x + width > Map.Width || y + height > Map.Height)
                 throw new ArgumentException("Region out of boundary");
 
             var result = new Dictionary<ushort, GameObject>();
@@ -122,7 +122,7 @@ namespace TestDayTasksLibrary.Application
             return result.Values.ToList();
         }
 
-        public bool IsObjectInRegion(ushort objectId, ushort x, ushort y, ushort width, ushort height)
+        public bool IsObjectIn(ushort objectId, ushort x, ushort y, ushort width, ushort height)
         {
             if (!Objects.ContainsKey(objectId))
                 throw new ArgumentException("Object not exists");

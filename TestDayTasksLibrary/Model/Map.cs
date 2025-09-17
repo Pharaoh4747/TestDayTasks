@@ -1,4 +1,6 @@
-﻿namespace TestDayTasksLibrary.Model
+﻿using TestDayTasksLibrary.Model.Tiles;
+
+namespace TestDayTasksLibrary.Model
 {
     public class Map
     {
@@ -9,7 +11,9 @@
         private SurfaceTile[,] SurfaceLayer { get; set; }
 
         private ObjectTile[,] ObjectLayer { get; set; }
-                
+
+        private RegionTile[,] RegionLayer { get; set; }
+
 
         public Map(ushort width, ushort height) {
             Width = width;
@@ -17,6 +21,7 @@
 
             SurfaceLayer = new SurfaceTile[Width, Height];
             ObjectLayer = new ObjectTile[Width, Height];
+            RegionLayer = new RegionTile[Width, Height];
         }
 
         public ref SurfaceTile GetSurfaceTile(ushort x, ushort y)
@@ -27,6 +32,11 @@
         public ref ObjectTile GetObjectTile(ushort x, ushort y)
         {
             return ref ObjectLayer[x, y];
+        }
+
+        public ref RegionTile GetRegionTile(ushort x, ushort y)
+        {
+            return ref RegionLayer[x, y];
         }
     }
 }

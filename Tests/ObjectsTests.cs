@@ -220,7 +220,7 @@ namespace Tests
         }
 
         [Test]
-        public void GetObjectsByRegion_ValidCoordinates()
+        public void GetObjectsIn_ValidCoordinates()
         {
             (var objects, var map) = ConstructObjects();
 
@@ -243,25 +243,25 @@ namespace Tests
             objects.AddObject(obj1);
             objects.AddObject(obj2);
 
-            var result = objects.GetObjectsByRegion(0, 0, 2, 2);
+            var result = objects.GetObjectsIn(0, 0, 2, 2);
 
             Assert.That(result.Count, Is.EqualTo(2));
         }
 
         [Test]
-        public void GetObjectsByRegion_ZeroSize()
+        public void GetObjectsIn_ZeroSize()
         {
             (var objects, var map) = ConstructObjects();
 
-            Assert.Throws<ArgumentException>(() => objects.GetObjectsByRegion(0, 0, 0, 0));
+            Assert.Throws<ArgumentException>(() => objects.GetObjectsIn(0, 0, 0, 0));
         }
 
         [Test]
-        public void GetObjectsByRegion_OutOfBoundaries()
+        public void GetObjectsIn_OutOfBoundaries()
         {
             (var objects, var map) = ConstructObjects();
 
-            Assert.Throws<ArgumentException>(() => objects.GetObjectsByRegion(1, 1, map.Width, map.Height));
+            Assert.Throws<ArgumentException>(() => objects.GetObjectsIn(1, 1, map.Width, map.Height));
         }
 
         [Test]
@@ -280,8 +280,8 @@ namespace Tests
             
             objects.AddObject(obj);
 
-            var result1 = objects.IsObjectInRegion(obj.Id, 0, 0, 1, 1);
-            var result2 = objects.IsObjectInRegion(obj.Id, 1, 1, 1, 1);
+            var result1 = objects.IsObjectIn(obj.Id, 0, 0, 1, 1);
+            var result2 = objects.IsObjectIn(obj.Id, 1, 1, 1, 1);
 
             Assert.That(result1, Is.EqualTo(true));
             Assert.That(result2, Is.EqualTo(false));
@@ -292,7 +292,7 @@ namespace Tests
         {
             (var objects, var map) = ConstructObjects();
 
-            Assert.Throws<ArgumentException>(() => objects.IsObjectInRegion(0, 0, 0, 1, 1));
+            Assert.Throws<ArgumentException>(() => objects.IsObjectIn(0, 0, 0, 1, 1));
         }
     }
 }

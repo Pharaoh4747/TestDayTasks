@@ -18,7 +18,8 @@ namespace Tests
         {
             var map = new Map(_width, _height);
             var objects = new GameObjectCollection(map);
-            var game = new Game(map, objects);
+            var regions = new RegionCollection(map);
+            var game = new Game(map, objects, regions);
             return (game, map);
         }
 
