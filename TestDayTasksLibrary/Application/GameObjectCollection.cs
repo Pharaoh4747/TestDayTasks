@@ -96,6 +96,7 @@ namespace TestDayTasksLibrary.Application
             return Objects[tile.ObjectId.Value];
         }
 
+        // Слабое место с точки зрения производительности, продумать поиск по словарю
         public IList<GameObject> GetObjectsIn(ushort x, ushort y, ushort width, ushort height)
         {
             if (width == 0 || height == 0)
@@ -124,6 +125,7 @@ namespace TestDayTasksLibrary.Application
             return result.Values.ToList();
         }
 
+        // Слабое место с точки зрения производительности, продумать пересечение прямоугольников
         public bool IsObjectIn(ushort objectId, ushort x, ushort y, ushort width, ushort height)
         {
             if (!Objects.ContainsKey(objectId))
@@ -141,6 +143,7 @@ namespace TestDayTasksLibrary.Application
             return false;
         }
 
+        // Слабое место в условиях многопоточности, продумать блокировку или иной метод решения
         public void MoveObject(ushort id, ushort x, ushort y, ushort width, ushort height)
         {
             if (!Objects.ContainsKey(id))
