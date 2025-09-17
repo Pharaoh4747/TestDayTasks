@@ -13,6 +13,8 @@ namespace TestDayTasksLibrary.Application
 
         public event EventHandler<GameObject>? ObjectDeleted;
 
+        public event EventHandler<GameObject>? ObjectMoved;
+
         public GameObjectCollection(Map map) {
             Map = map;
         }
@@ -97,10 +99,10 @@ namespace TestDayTasksLibrary.Application
         public IList<GameObject> GetObjectsIn(ushort x, ushort y, ushort width, ushort height)
         {
             if (width == 0 || height == 0)
-                throw new ArgumentException("Region is zero size");
+                throw new ArgumentException("Area is zero size");
 
             if (x + width > Map.Width || y + height > Map.Height)
-                throw new ArgumentException("Region out of boundary");
+                throw new ArgumentException("Area out of boundary");
 
             var result = new Dictionary<ushort, GameObject>();
 
@@ -137,6 +139,59 @@ namespace TestDayTasksLibrary.Application
                 }
 
             return false;
+        }
+
+        public void MoveObject(ushort id, ushort x, ushort y, ushort width, ushort height)
+        {
+            if (!Objects.ContainsKey(id))
+                throw new ArgumentException("Object not exists");
+
+            if (width == 0 || height == 0)
+                throw new ArgumentException("Area is zero size");
+
+            if (x + width > Map.Width || y + height > Map.Height)
+                throw new ArgumentException("Area out of boundary");
+            
+
+            for (ushort i = x; i < x + width; i++)
+                for (ushort j = y; j < y + height; j++)
+                {
+                    ref var surfaceTile = ref Map.GetSurfaceTile(i, j);
+                    ref var objectTile = ref Map.GetObjectTile(i, j);
+
+                    var canMoveTo = surfaceTile.CanObjectBePlaced;                    
+                    if (objectTile.ObjectId.HasValue)
+                        if (objectTile.ObjectId.Value != id)
+                            canMoveTo = false;
+
+                    if (!canMoveTo)
+                        throw new ArgumentException("Can not move to specified area");
+                }
+
+            var obj = Objects[id];
+
+            for (ushort i = obj.X; i < obj.X + obj.Width; i++)
+                for (ushort j = obj.Y; j < obj.Y + obj.Height; j++)
+                {
+                    ref var objectTile = ref Map.GetObjectTile(j, j);
+                    objectTile.ObjectId = null;
+                }
+
+            for (ushort i = x; i < x + width; i++)
+                for (ushort j = y; j < y + height; j++)
+                {
+                    ref var objectTile = ref Map.GetObjectTile(j, j);
+                    objectTile.ObjectId = id;
+                }
+
+            obj.X = x;
+            obj.Y = y;
+            obj.Width = width;
+            obj.Height = height;
+            Objects[id] = obj;
+
+            if (ObjectMoved is not null)
+                ObjectMoved.Invoke(this, obj);
         }
     }
 }

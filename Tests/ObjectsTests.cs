@@ -1,5 +1,6 @@
 using TestDayTasksLibrary.Application;
 using TestDayTasksLibrary.Model;
+using TestDayTasksLibrary.Model.Enums;
 
 namespace Tests
 {
@@ -293,6 +294,93 @@ namespace Tests
             (var objects, var map) = ConstructObjects();
 
             Assert.Throws<ArgumentException>(() => objects.IsObjectIn(0, 0, 0, 1, 1));
+        }
+
+        [Test]
+        public void MoveObject_ValidAreaAndId()
+        {
+            (var objects, var map) = ConstructObjects();
+
+            bool eventRaised = false;
+            objects.ObjectMoved += (sender, args) => { eventRaised = true; };
+
+            var obj = new GameObject
+            {
+                Id = 0,
+                X = 0,
+                Y = 0,
+                Width = 1,
+                Height = 1,
+            };
+
+            objects.AddObject(obj);
+            objects.MoveObject(obj.Id, 1, 1, 1, 1);
+
+            Assert.That(map.GetObjectTile(0, 0).ObjectId, Is.EqualTo(null));
+            Assert.That(map.GetObjectTile(1, 1).ObjectId, Is.EqualTo(obj.Id));
+            Assert.IsTrue(eventRaised);
+        }
+
+        [Test]
+        public void MoveObject_InvalidId()
+        {
+            (var objects, var map) = ConstructObjects();
+
+            Assert.Throws<ArgumentException>(() => objects.MoveObject(0, 1, 1, 1, 1));
+        }
+
+        [Test]
+        public void MoveObject_ZeroSize()
+        {
+            (var objects, var map) = ConstructObjects();
+            var obj = new GameObject
+            {
+                Id = 0,
+                X = 0,
+                Y = 0,
+                Width = 1,
+                Height = 1,
+            };
+
+            objects.AddObject(obj);
+            Assert.Throws<ArgumentException>(() => objects.MoveObject(obj.Id, 1, 1, 0, 0));
+        }
+
+        [Test]
+        public void MoveObject_InvalidBoundaries()
+        {
+            (var objects, var map) = ConstructObjects();
+            var obj = new GameObject
+            {
+                Id = 0,
+                X = 0,
+                Y = 0,
+                Width = 1,
+                Height = 1,
+            };
+
+            objects.AddObject(obj);
+            Assert.Throws<ArgumentException>(() => objects.MoveObject(obj.Id, map.Width, map.Height, 1, 1));
+        }
+
+        [Test]
+        public void MoveObject_InvalidArea()
+        {
+            (var objects, var map) = ConstructObjects();
+            var obj = new GameObject
+            {
+                Id = 0,
+                X = 0,
+                Y = 0,
+                Width = 1,
+                Height = 1,
+            };
+
+            objects.AddObject(obj);
+            ref var surfaceTile = ref map.GetSurfaceTile(1, 1);
+            surfaceTile.SurfaceType = SurfaceType.Mountains;
+
+            Assert.Throws<ArgumentException>(() => objects.MoveObject(obj.Id, 1, 1, 1, 1));
         }
     }
 }
